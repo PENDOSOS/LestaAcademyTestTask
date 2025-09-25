@@ -1,31 +1,31 @@
 #include "Weapon.h"
 
-Weapon* SwordProducer::GiveWeapon()
+std::unique_ptr<Weapon> SwordProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::CHOPPING, 3, "Sword" };
+	return std::make_unique<Weapon>(DamageType::CHOPPING, 3, "Sword");
 }
 
-Weapon* CudgelProducer::GiveWeapon()
+std::unique_ptr<Weapon> CudgelProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::CRUSHING, 3, "Cudgel" };
+	return std::make_unique<Weapon>(DamageType::CRUSHING, 3, "Cudgel");
 }
 
-Weapon* DaggerProducer::GiveWeapon()
+std::unique_ptr<Weapon> DaggerProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::STABBING, 2, "Dagger" };
+	return std::make_unique<Weapon>(DamageType::STABBING, 2, "Dagger");
 }
 
-Weapon* AxeProducer::GiveWeapon()
+std::unique_ptr<Weapon> AxeProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::CHOPPING, 4, "Axe" };
+	return std::make_unique<Weapon>(DamageType::CHOPPING, 4, "Axe");
 }
 
-Weapon* LanceProducer::GiveWeapon()
+std::unique_ptr<Weapon> LanceProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::STABBING, 3, "Lance" };
+	return std::make_unique<Weapon>(DamageType::STABBING, 3, "Lance");
 }
 
-Weapon* LegendarySwordProducer::GiveWeapon()
+std::unique_ptr<Weapon> LegendarySwordProducer::GiveWeapon()
 {
-	return new Weapon{ DamageType::CHOPPING, 3, "Legendary sword" };
+	return std::make_unique<Weapon>(DamageType::CHOPPING, 3, "Legendary sword");
 }

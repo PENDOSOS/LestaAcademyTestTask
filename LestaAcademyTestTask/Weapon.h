@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 typedef enum DamageType
 {
@@ -40,35 +41,35 @@ struct DamageInfo
 class WeaponProducer
 {
 public:
-	virtual Weapon* GiveWeapon() = 0;
+	virtual std::unique_ptr<Weapon> GiveWeapon() = 0;
 };
 
 class SwordProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };
 
 class CudgelProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };
 
 class DaggerProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };
 
 class AxeProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };
 
 class LanceProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };
 
 class LegendarySwordProducer : public WeaponProducer
 {
-	Weapon* GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() override final;
 };

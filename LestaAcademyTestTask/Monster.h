@@ -54,6 +54,7 @@ public:
 
 class Ghost : public Monster
 {
+public:
 	Ghost(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
 	virtual ~Ghost() override final {};
 	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
@@ -69,9 +70,10 @@ public:
 
 class Dragon : public Monster
 {
+public:
 	Dragon(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Dragon() override final {};
+	~Dragon() override final {}
 	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
-private:
+protected:
 	unsigned currentTurn;
 };

@@ -2,10 +2,29 @@
 
 struct DamageInfo;
 
+enum struct CharacterTypesEnum
+{
+	PLAYER = 0,
+	MONSTER,
+	TOTAL_CHARACTER_TYPES
+};
+
+enum struct CharactersEnum
+{
+	PLAYER = 0,
+	GOBLIN,
+	SKELETON,
+	SLIME,
+	GHOST,
+	GOLEM,
+	DRAGON,
+	TOTAL_CHARACTERS
+};
+
 class Character
 {
 public:
-	virtual ~Character() = 0 {};
+	virtual ~Character() = 0 {}
 	virtual void TakeDamage(DamageInfo* damageInfo) = 0;
 	virtual DamageInfo* GiveDamage(int enemyAgility) = 0;
 	virtual bool IsAttackSuccess(int enemyAgility) = 0;

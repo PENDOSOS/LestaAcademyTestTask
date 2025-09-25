@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
 	//WeaponProducer* arsenal = new DaggerProducer;
-	std::vector<std::unique_ptr<WeaponProducer>> arsenal;
+	/*std::vector<std::unique_ptr<WeaponProducer>> arsenal;
 	
 
 	// надо прописать спавнеры
@@ -24,6 +24,7 @@ int main()
 	auto a = player->IsAlive();
 
 	std::unique_ptr<Spawner> spawner = std::make_unique<PlayerSpawner>();
-	auto b = spawner->Spawn();
+	auto b = spawner->Spawn();*/
+
 	return 0;
 }
