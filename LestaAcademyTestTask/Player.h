@@ -56,6 +56,15 @@ private:
 	std::unique_ptr<Weapon> weapon;
 };
 
+enum struct PlayerClassesEnum
+{
+	BANDIT = 0,
+	WARRIOR,
+	BARBARIAN,
+
+	TOTAL_CLASSES
+};
+
 // этот класс просто прослойка между Player и декораторами уровней
 class PlayerClassLevel : public Player
 {
@@ -87,23 +96,29 @@ protected:
 	int healthByLevel;
 };
 
+enum struct PlayerClassLevelsEnum
+{
+	LEVEL_1 = 1,
+	LEVEL_2,
+	LEVEL_3,
+
+	TOTAL_CLASS_LEVELS
+};
+
 class ClassBanditLevel1 : public PlayerClassLevel
 {
 public:
-	ClassBanditLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon);
+	ClassBanditLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
 	~ClassBanditLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility) override final;
-
-	std::unique_ptr<Weapon> startWeapon;
 };
-
 
 class ClassBanditLevel2 : public PlayerClassLevel
 {
 public:
-	ClassBanditLevel2(std::unique_ptr<Player> player, int healthByLevel);
+	ClassBanditLevel2(std::unique_ptr<Player> player);
 	~ClassBanditLevel2() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -116,7 +131,7 @@ class ClassBanditLevel3 : public PlayerClassLevel
 {
 public:
 	// возможно стоит убрать healthByLevel из контсруктора и сделать константу в каждом классе
-	ClassBanditLevel3(std::unique_ptr<Player> player, int healthByLevel);
+	ClassBanditLevel3(std::unique_ptr<Player> player);
 	~ClassBanditLevel3() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -127,19 +142,17 @@ private:
 class ClassWarriorLevel1 : public PlayerClassLevel
 {
 public:
-	ClassWarriorLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon);
+	ClassWarriorLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
 	~ClassWarriorLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility = -1) override final;
-
-	std::unique_ptr<Weapon> startWeapon;
 };
 
 class ClassWarriorLevel2 : public PlayerClassLevel
 {
 public:
-	ClassWarriorLevel2(std::unique_ptr<Player> player, int healthByLevel);
+	ClassWarriorLevel2(std::unique_ptr<Player> player);
 	~ClassWarriorLevel2() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -149,7 +162,7 @@ private:
 class ClassWarriorLevel3 : public PlayerClassLevel
 {
 public:
-	ClassWarriorLevel3(std::unique_ptr<Player> player, int healthByLevel);
+	ClassWarriorLevel3(std::unique_ptr<Player> player);
 	~ClassWarriorLevel3() override final {}
 	void PrintLevelBonusInfo() override final;
 private:

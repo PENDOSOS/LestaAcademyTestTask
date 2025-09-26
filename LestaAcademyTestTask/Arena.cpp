@@ -7,29 +7,44 @@
 
 Arena::Arena()
 {
-	spawners.push_back(std::make_unique<PlayerSpawner>());
-	spawners.push_back(std::make_unique<GoblinSpawner>());
-	spawners.push_back(std::make_unique<SkeletonSpawner>());
-	spawners.push_back(std::make_unique<SlimeSpawner>());
-	spawners.push_back(std::make_unique<GhostSpawner>());
-	spawners.push_back(std::make_unique<GolemSpawner>());
-	spawners.push_back(std::make_unique<DragonSpawner>());
+	std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal = std::make_shared<std::vector<std::shared_ptr<WeaponProducer>>>();
+	arsenal->emplace_back(std::make_shared<SwordProducer>());
+	arsenal->emplace_back(std::make_shared<CudgelProducer>());
+	arsenal->emplace_back(std::make_shared<DaggerProducer>());
+	arsenal->emplace_back(std::make_shared<AxeProducer>());
+	arsenal->emplace_back(std::make_shared<LanceProducer>());
+	arsenal->emplace_back(std::make_shared<LegendarySwordProducer>());
+
+	playerPromoter = std::make_unique<PlayerPromoter>(arsenal);
+
+	spawners.push_back(std::make_unique<PlayerSpawner>(arsenal));
+	spawners.push_back(std::make_unique<GoblinSpawner>(arsenal));
+	spawners.push_back(std::make_unique<SkeletonSpawner>(arsenal));
+	spawners.push_back(std::make_unique<SlimeSpawner>(arsenal));
+	spawners.push_back(std::make_unique<GhostSpawner>(arsenal));
+	spawners.push_back(std::make_unique<GolemSpawner>(arsenal));
+	spawners.push_back(std::make_unique<DragonSpawner>(arsenal));
+
+	Initialize();
 }
 
 void Arena::Initialize()
 {
-	
+	SpawnPlayer();
 }
 
 void Arena::Battle()
 {
-	bool isEnemiesAlive = true;
+	bool isCharactersAlive = true;
 	unsigned attacker = 0;
 	unsigned defender = 1;
-	while (isEnemiesAlive)
+
+	SpawnEnemy();
+
+	while (isCharactersAlive)
 	{
 		characters[defender]->TakeDamage(characters[attacker]->GiveDamage(characters[defender]->GetAgility()));
-		isEnemiesAlive = characters[attacker]->IsAlive() && characters[defender]->IsAlive();
+		isCharactersAlive = characters[attacker]->IsAlive() && characters[defender]->IsAlive();
 		attacker = (attacker + 1) % 2;
 		defender = (defender + 1) % 2;
 	}
@@ -38,6 +53,10 @@ void Arena::Battle()
 void Arena::SpawnPlayer()
 {
 	characters[(int)CharacterTypesEnum::PLAYER] = spawners[(int)CharactersEnum::PLAYER]->Spawn();
+
+	Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
+	std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
+	characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->promotePlayer(std::move(player));
 }
 
 void Arena::SpawnEnemy()
@@ -49,5 +68,15 @@ void Arena::SpawnEnemy()
 	int chosenEnemy = dist(rng);
 
 	characters[(int)CharacterTypesEnum::MONSTER] = spawners[chosenEnemy]->Spawn();
+}
+
+void Arena::AfterBattle()
+{
+	if (characters[(int)CharacterTypesEnum::PLAYER]->IsAlive())
+	{
+		Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
+		std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
+		characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->promotePlayer(std::move(player));
+	}
 }
 

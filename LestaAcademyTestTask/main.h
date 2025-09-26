@@ -6,7 +6,8 @@
 #include <iostream>
 
 // TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
-#include "Monster.h"
+//#include "Monster.h"
 #include "Weapon.h"
-#include "Player.h"
+//#include "Player.h"
 #include "Spawner.h"
+#include "Arena.h"

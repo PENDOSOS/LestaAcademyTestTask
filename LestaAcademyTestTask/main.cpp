@@ -26,5 +26,10 @@ int main()
 	std::unique_ptr<Spawner> spawner = std::make_unique<PlayerSpawner>();
 	auto b = spawner->Spawn();*/
 
+	Arena arena;
+
+	arena.Battle();
+	arena.AfterBattle();
+
 	return 0;
 }

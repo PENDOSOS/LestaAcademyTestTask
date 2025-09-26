@@ -92,12 +92,12 @@ void PlayerClassLevel::ChangeWeapon(std::unique_ptr<Weapon> weapon)
 		player->ChangeWeapon(std::move(weapon));
 }
 
-ClassBanditLevel1::ClassBanditLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon)
-	: PlayerClassLevel(std::move(player), healthByLevel)
-	, startWeapon(std::move(startWeapon))
+#define CLASS_BANDIT_HEALTH_BY_LEVEL 4
+
+ClassBanditLevel1::ClassBanditLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
 {
-	this->player->ChangeWeapon(std::move(this->startWeapon));
-	startWeapon = nullptr;
+	this->player->ChangeWeapon(std::move(startWeapon));
 }
 
 void ClassBanditLevel1::PrintLevelBonusInfo()
@@ -115,8 +115,8 @@ void ClassBanditLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 		damageInfo->bonusDamage += 1;
 }
 
-ClassBanditLevel2::ClassBanditLevel2(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassBanditLevel2::ClassBanditLevel2(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
 {
 	AcceptAbility();
@@ -136,8 +136,8 @@ void ClassBanditLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-ClassBanditLevel3::ClassBanditLevel3(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassBanditLevel3::ClassBanditLevel3(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
 {}
 
 void ClassBanditLevel3::PrintLevelBonusInfo()
@@ -157,10 +157,13 @@ void ClassBanditLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-ClassWarriorLevel1::ClassWarriorLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon)
-	: PlayerClassLevel(std::move(player), healthByLevel)
-	, startWeapon(std::move(startWeapon))
-{}
+#define CLASS_WARRIOR_HEALTH_BY_LEVEL 5
+
+ClassWarriorLevel1::ClassWarriorLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
+{
+	this->player->ChangeWeapon(std::move(startWeapon));
+}
 
 void ClassWarriorLevel1::PrintLevelBonusInfo()
 {
@@ -175,8 +178,8 @@ void ClassWarriorLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-ClassWarriorLevel2::ClassWarriorLevel2(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassWarriorLevel2::ClassWarriorLevel2(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
 
 void ClassWarriorLevel2::PrintLevelBonusInfo()
@@ -192,8 +195,8 @@ void ClassWarriorLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-ClassWarriorLevel3::ClassWarriorLevel3(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassWarriorLevel3::ClassWarriorLevel3(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
 {}
 
