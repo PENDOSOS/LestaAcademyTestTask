@@ -174,19 +174,17 @@ private:
 class ClassBarbarianLevel1 : public PlayerClassLevel
 {
 public:
-	ClassBarbarianLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon);
+	ClassBarbarianLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
 	~ClassBarbarianLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
-
-	std::unique_ptr<Weapon> startWeapon;
 };
 
 class ClassBarbarianLevel2 : public PlayerClassLevel
 {
 public:
-	ClassBarbarianLevel2(std::unique_ptr<Player> player, int healthByLevel);
+	ClassBarbarianLevel2(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel2() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -196,7 +194,7 @@ private:
 class ClassBarbarianLevel3 : public PlayerClassLevel
 {
 public:
-	ClassBarbarianLevel3(std::unique_ptr<Player> player, int healthByLevel);
+	ClassBarbarianLevel3(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel3() override final {}
 	void PrintLevelBonusInfo() override final;
 private:

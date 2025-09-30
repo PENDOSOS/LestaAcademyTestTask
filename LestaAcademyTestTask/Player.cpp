@@ -9,7 +9,7 @@ BasePlayer::BasePlayer(int strength, int agility, int stamina)
 	, strength(strength)
 	, agility(agility)
 	, stamina(stamina)
-	, currentTurn(1)
+	, currentTurn(0)
 	, weapon(nullptr)
 {}
 
@@ -25,12 +25,12 @@ void BasePlayer::TakeDamage(DamageInfo* damageInfo)
 
 DamageInfo* BasePlayer::GiveDamage(int enemyAgility)
 {
+	currentTurn++;
 	if (IsAttackSuccess(enemyAgility))
 	{
 		DamageInfo* damageInfo = new DamageInfo{ weapon->damageType, weapon->damage, 0, strength };
 		return damageInfo;
 	}
-	currentTurn++;
 	return nullptr;
 }
 
@@ -107,7 +107,7 @@ void ClassBanditLevel1::PrintLevelBonusInfo()
 
 void ClassBanditLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
-	// способность разбойника первого уровня дает бонус к атаке, не к защите
+	// accept ability if attack success or player gives damage
 	if (damageInfo == nullptr || damageInfo->damageType == MONSTER_DAMAGE)
 		return;
 
@@ -147,13 +147,13 @@ void ClassBanditLevel3::PrintLevelBonusInfo()
 
 void ClassBanditLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
-	if (damageInfo != nullptr)
-	{ 
-		int currentTurn = GetCurrentTurn();
-		if (currentTurn > 1)
-		{
-			damageInfo->bonusDamage += currentTurn - 1;
-		}
+	if (damageInfo == nullptr || damageInfo->damageType == MONSTER_DAMAGE)
+		return;
+
+	int currentTurn = GetCurrentTurn();
+	if (currentTurn > 1)
+	{
+		damageInfo->bonusDamage += currentTurn - 1;
 	}
 }
 
@@ -172,6 +172,9 @@ void ClassWarriorLevel1::PrintLevelBonusInfo()
 
 void ClassWarriorLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
+	if (damageInfo == nullptr || damageInfo->damageType == MONSTER_DAMAGE)
+		return;
+
 	if (player->GetCurrentTurn() == 1)
 	{
 		damageInfo->bonusDamage = damageInfo->weaponDamage;
@@ -189,6 +192,10 @@ void ClassWarriorLevel2::PrintLevelBonusInfo()
 
 void ClassWarriorLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
+	// ability accepts only if player takes damage
+	if (damageInfo == nullptr || damageInfo->damageType != MONSTER_DAMAGE)
+		return;
+
 	if (player->GetStrength() > damageInfo->attackerStrength)
 	{
 		damageInfo->weaponDamage -= 3;
@@ -214,11 +221,12 @@ void ClassWarriorLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player, int healthByLevel, std::unique_ptr<Weapon> startWeapon)
-	: PlayerClassLevel(std::move(player), healthByLevel)
-	, startWeapon(std::move(startWeapon))
+#define CLASS_WARRIOR_HEALTH_BY_LEVEL 6
+
+ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {
-	ChangeWeapon(std::move(this->startWeapon));
+	ChangeWeapon(std::move(startWeapon));
 }
 
 void ClassBarbarianLevel1::PrintLevelBonusInfo()
@@ -228,6 +236,9 @@ void ClassBarbarianLevel1::PrintLevelBonusInfo()
 
 void ClassBarbarianLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
+	if (damageInfo == nullptr || damageInfo->damageType == MONSTER_DAMAGE)
+		return;
+
 	int currentTurn = GetCurrentTurn();
 	if (currentTurn >= 1 && currentTurn <= 3)
 	{
@@ -239,8 +250,8 @@ void ClassBarbarianLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgilit
 	}
 }
 
-ClassBarbarianLevel2::ClassBarbarianLevel2(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassBarbarianLevel2::ClassBarbarianLevel2(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
 
 void ClassBarbarianLevel2::PrintLevelBonusInfo()
@@ -250,11 +261,14 @@ void ClassBarbarianLevel2::PrintLevelBonusInfo()
 
 void ClassBarbarianLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
+	if (damageInfo == nullptr || damageInfo->damageType != MONSTER_DAMAGE)
+		return;
+
 	damageInfo->weaponDamage -= player->GetStamina();
 }
 
-ClassBarbarianLevel3::ClassBarbarianLevel3(std::unique_ptr<Player> player, int healthByLevel)
-	: PlayerClassLevel(std::move(player), healthByLevel)
+ClassBarbarianLevel3::ClassBarbarianLevel3(std::unique_ptr<Player> player)
+	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
 {}
 

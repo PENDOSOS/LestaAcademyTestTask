@@ -109,7 +109,7 @@ void Golem::AcceptAbility(DamageInfo* damageInfo)
 
 Dragon::Dragon(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
 	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
-	, currentTurn(1)
+	, currentTurn(0)
 {}
 
 void Dragon::AcceptAbility(DamageInfo* damageInfo)
@@ -117,7 +117,10 @@ void Dragon::AcceptAbility(DamageInfo* damageInfo)
 	if (damageInfo == nullptr)
 		return;
 
-	currentTurn++;
-	if (currentTurn % 3 == 0)
-		damageInfo->bonusDamage = 3;
+	if (damageInfo->damageType == MONSTER_DAMAGE)
+	{
+		currentTurn++;
+		if (currentTurn % 3 == 0)
+			damageInfo->bonusDamage = 3;
+	}
 }

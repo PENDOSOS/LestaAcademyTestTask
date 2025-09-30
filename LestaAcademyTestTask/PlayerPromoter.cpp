@@ -13,10 +13,33 @@ PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<Weapo
 std::unique_ptr<Player> PlayerPromoter::promotePlayer(std::unique_ptr<Player> player)
 {
 	int chosenClass = -1;
-	std::cout << "You can promote your character. Choose class to promote\n"
-		<< "(1 - Bandit, 2 - Warrior, 3 - Barbarian): ";
-	std::cin >> chosenClass;
-	std::cout << chosenClass << std::endl;
+	bool isInputCorrect = false; 
+	while (!isInputCorrect)
+	{
+		std::cout << "You can promote your character. Choose class to promote\n"
+			<< "(1 - Bandit, 2 - Warrior, 3 - Barbarian): ";
+		if (std::cin >> chosenClass) 
+		{
+			// Проверяем, что введённое значение — 1, 2 или 3
+			if (chosenClass >= 1 && chosenClass <= 3) 
+			{
+				isInputCorrect = true;
+			}
+			else 
+			{
+				std::cout << "Invalid class number. Please try again.\n";
+			}
+		}
+		else 
+		{
+			// Очищаем состояние ошибки и игнорируем некорректный ввод
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter a number.\n";
+		}
+	}
+	//std::cout << chosenClass << std::endl;
+	
 	chosenClass--;
 
 	switch (chosenClass)
@@ -83,5 +106,22 @@ std::unique_ptr<Player> PlayerPromoter::PromoteWarrior(std::unique_ptr<Player> p
 
 std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player> player)
 {
-	return std::unique_ptr<Player>();
+	int currentClassLevel = classLevels[(int)PlayerClassesEnum::BARBARIAN] + 1;
+	std::unique_ptr<Player> promoted;
+	switch (currentClassLevel)
+	{
+	case (int)PlayerClassLevelsEnum::LEVEL_1:
+		promoted = std::make_unique<ClassBarbarianLevel1>(std::move(player), arsenal->data()[SWORD]->GiveWeapon());
+		break;
+	case (int)PlayerClassLevelsEnum::LEVEL_2:
+		promoted = std::make_unique<ClassBarbarianLevel2>(std::move(player));
+		break;
+	case (int)PlayerClassLevelsEnum::LEVEL_3:
+		promoted = std::make_unique<ClassBarbarianLevel3>(std::move(player));
+		break;
+	default:
+		break;
+	}
+
+	return std::move(promoted);
 }
