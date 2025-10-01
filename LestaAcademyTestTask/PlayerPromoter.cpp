@@ -1,26 +1,23 @@
 #include "PlayerPromoter.h"
 #include "Player.h"
 #include "Weapon.h"
+#include "Printer.h"
 
 #include <iostream>
 
-PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal)
-	: arsenal(arsenal)
-{
-	memset(&classLevels, 0, sizeof(classLevels));
-}
+PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer)
+	: arsenal(arsenal), printer(printer)
+{}
 
-std::unique_ptr<Player> PlayerPromoter::promotePlayer(std::unique_ptr<Player> player)
+std::unique_ptr<Player> PlayerPromoter::PromotePlayer(std::unique_ptr<Player> player)
 {
 	int chosenClass = -1;
 	bool isInputCorrect = false; 
 	while (!isInputCorrect)
 	{
-		std::cout << "You can promote your character. Choose class to promote\n"
-			<< "(1 - Bandit, 2 - Warrior, 3 - Barbarian): ";
-		if (std::cin >> chosenClass) 
+		printer->PrintPlayerPromoteInfo(classLevels);
+		if ((std::cin >> chosenClass).good()) 
 		{
-			// Проверяем, что введённое значение — 1, 2 или 3
 			if (chosenClass >= 1 && chosenClass <= 3) 
 			{
 				isInputCorrect = true;
@@ -32,13 +29,11 @@ std::unique_ptr<Player> PlayerPromoter::promotePlayer(std::unique_ptr<Player> pl
 		}
 		else 
 		{
-			// Очищаем состояние ошибки и игнорируем некорректный ввод
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Invalid input. Please enter a number.\n";
 		}
 	}
-	//std::cout << chosenClass << std::endl;
 	
 	chosenClass--;
 
@@ -46,12 +41,15 @@ std::unique_ptr<Player> PlayerPromoter::promotePlayer(std::unique_ptr<Player> pl
 	{
 	case (int)PlayerClassesEnum::BANDIT:
 		player = PromoteBandit(std::move(player));
+		classLevels[(int)PlayerClassesEnum::BANDIT]++;
 		break;
 	case (int)PlayerClassesEnum::WARRIOR:
 		player = PromoteWarrior(std::move(player));
+		classLevels[(int)PlayerClassesEnum::WARRIOR]++;
 		break;
 	case (int)PlayerClassesEnum::BARBARIAN:
 		player = PromoteBarbarian(std::move(player));
+		classLevels[(int)PlayerClassesEnum::BARBARIAN]++;
 		break;
 	default:
 		break;
@@ -124,4 +122,9 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player>
 	}
 
 	return std::move(promoted);
+}
+
+void PlayerPromoter::ReinitLevels()
+{
+	memset(&classLevels, 0, sizeof(classLevels));
 }

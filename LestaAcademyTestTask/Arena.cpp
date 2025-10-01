@@ -2,11 +2,15 @@
 #include "Character.h"
 #include "Spawner.h"
 #include "Weapon.h"
+#include "Printer.h"
 
 #include <random>
+#include <iostream>
 
-Arena::Arena()
+Arena::Arena() : countDefeatedMonsters(0)
 {
+	printer = std::make_shared<Printer>();
+
 	std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal = std::make_shared<std::vector<std::shared_ptr<WeaponProducer>>>();
 	arsenal->emplace_back(std::make_shared<SwordProducer>());
 	arsenal->emplace_back(std::make_shared<CudgelProducer>());
@@ -15,7 +19,7 @@ Arena::Arena()
 	arsenal->emplace_back(std::make_shared<LanceProducer>());
 	arsenal->emplace_back(std::make_shared<LegendarySwordProducer>());
 
-	playerPromoter = std::make_unique<PlayerPromoter>(arsenal);
+	playerPromoter = std::make_unique<PlayerPromoter>(arsenal, printer);
 
 	spawners.push_back(std::make_unique<PlayerSpawner>(arsenal));
 	spawners.push_back(std::make_unique<GoblinSpawner>(arsenal));
@@ -24,13 +28,6 @@ Arena::Arena()
 	spawners.push_back(std::make_unique<GhostSpawner>(arsenal));
 	spawners.push_back(std::make_unique<GolemSpawner>(arsenal));
 	spawners.push_back(std::make_unique<DragonSpawner>(arsenal));
-
-	Initialize();
-}
-
-void Arena::Initialize()
-{
-	SpawnPlayer();
 }
 
 void Arena::Battle()
@@ -56,7 +53,7 @@ void Arena::SpawnPlayer()
 
 	Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
 	std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
-	characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->promotePlayer(std::move(player));
+	characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->PromotePlayer(std::move(player));
 }
 
 void Arena::SpawnEnemy()
@@ -72,11 +69,41 @@ void Arena::SpawnEnemy()
 
 void Arena::AfterBattle()
 {
+	printer->PrintBattleResult(characters);
 	if (characters[(int)CharacterTypesEnum::PLAYER]->IsAlive())
 	{
-		Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
-		std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
-		characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->promotePlayer(std::move(player));
+		countDefeatedMonsters++;
+		if (countDefeatedMonsters < numberOfDefeatedMonstersToWin)
+		{
+			Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
+			std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
+			characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->PromotePlayer(std::move(player));
+		}
+	}
+}
+
+unsigned Arena::Start()
+{
+	playerPromoter->ReinitLevels();
+	countDefeatedMonsters = 0;
+
+	SpawnPlayer();
+
+	while (characters[(int)CharacterTypesEnum::PLAYER]->IsAlive() && countDefeatedMonsters < numberOfDefeatedMonstersToWin)
+	{
+		Battle();
+		AfterBattle();
+	}
+
+	if (countDefeatedMonsters == numberOfDefeatedMonstersToWin)
+	{
+		printer->PrintGameWon();
+		return PLAYER_WON;
+	}
+	else
+	{
+		printer->PrintGameOver();
+		return PLAYER_LOST;
 	}
 }
 
