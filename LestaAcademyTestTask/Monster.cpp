@@ -3,13 +3,14 @@
 
 #include <random>
 
-Monster::Monster(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
+Monster::Monster(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon, std::string name)
 	: strength(strength)
 	, agility(agility)
 	, stamina(stamina)
 	, drop(std::move(weapon))
 	, damage(damage)
 	, health(health)
+	, name(name)
 {
 }
 
@@ -21,23 +22,23 @@ std::unique_ptr<Weapon> Monster::DropWeapon()
 	return std::move(drop);
 }
 
-DamageInfo* Monster::GiveDamage(int enemyAgility)
+std::unique_ptr<DamageInfo> Monster::GiveDamage(int enemyAgility)
 {
 	if (IsAttackSuccess(enemyAgility))
 	{
-		DamageInfo* damageInfo = new DamageInfo{ MONSTER_DAMAGE, damage, 0, strength };
-		AcceptAbility(damageInfo);
-		return damageInfo;
+		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(MONSTER_DAMAGE, damage, 0, strength);
+		AcceptAbility(damageInfo.get());
+		return std::move(damageInfo);
 	}
 	return nullptr;
 }
 
-void Monster::TakeDamage(DamageInfo* damageInfo)
+void Monster::TakeDamage(std::unique_ptr<DamageInfo> damageInfo)
 {
 	if (damageInfo == nullptr)
 		return;
 
-	AcceptAbility(damageInfo);
+	AcceptAbility(damageInfo.get());
 	health -= (damageInfo->weaponDamage + damageInfo->bonusDamage + damageInfo->attackerStrength);
 }
 
@@ -51,11 +52,11 @@ bool Monster::IsAttackSuccess(int enemyAgility)
 }
 
 Goblin::Goblin(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Goblin")
 {}
 
 Skeleton::Skeleton(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Skeleton")
 {}
 
 void Skeleton::AcceptAbility(DamageInfo* damageInfo)
@@ -68,7 +69,7 @@ void Skeleton::AcceptAbility(DamageInfo* damageInfo)
 }
 
 Slime::Slime(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Slime")
 {}
 
 void Slime::AcceptAbility(DamageInfo* damageInfo)
@@ -83,7 +84,7 @@ void Slime::AcceptAbility(DamageInfo* damageInfo)
 }
 
 Ghost::Ghost(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Ghost")
 {}
 
 void Ghost::AcceptAbility(DamageInfo* damageInfo)
@@ -96,7 +97,7 @@ void Ghost::AcceptAbility(DamageInfo* damageInfo)
 }
 
 Golem::Golem(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Golem")
 {}
 
 void Golem::AcceptAbility(DamageInfo* damageInfo)
@@ -108,7 +109,7 @@ void Golem::AcceptAbility(DamageInfo* damageInfo)
 }
 
 Dragon::Dragon(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon)
-	: Monster(health, damage, strength, agility, stamina, std::move(weapon))
+	: Monster(health, damage, strength, agility, stamina, std::move(weapon), "Dragon")
 	, currentTurn(0)
 {}
 

@@ -29,8 +29,8 @@ public:
 	BasePlayer(int strength, int agility, int stamina);
 	~BasePlayer() override final;
 
-	void TakeDamage(DamageInfo* damageInfo) override final;
-	DamageInfo* GiveDamage(int enemyAgility) override final;
+	void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) override final;
+	std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) override final;
 	// IsAttackSuccess по архитектуре не должен вызываться извне
 	// возможно, чтоит его вынести в protected
 	bool IsAttackSuccess(int enemyAgility) override final;
@@ -72,8 +72,8 @@ public:
 	PlayerClassLevel(std::unique_ptr<Player> player, int healthByLevel);
 	virtual ~PlayerClassLevel() override;
 
-	DamageInfo* GiveDamage(int enemyAgility) override final;
-	void TakeDamage(DamageInfo* damageInfo) override final;
+	std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) override final;
+	void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) override final;
 	int GetAgility() override final { return player->GetAgility(); }
 	int GetStrength() override final { return player->GetStrength(); }
 	int GetStamina() override final { return player->GetStamina(); }

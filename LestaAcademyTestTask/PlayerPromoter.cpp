@@ -109,7 +109,7 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player>
 	switch (currentClassLevel)
 	{
 	case (int)PlayerClassLevelsEnum::LEVEL_1:
-		promoted = std::make_unique<ClassBarbarianLevel1>(std::move(player), arsenal->data()[SWORD]->GiveWeapon());
+		promoted = std::make_unique<ClassBarbarianLevel1>(std::move(player), arsenal->data()[CUDGEL]->GiveWeapon());
 		break;
 	case (int)PlayerClassLevelsEnum::LEVEL_2:
 		promoted = std::make_unique<ClassBarbarianLevel2>(std::move(player));

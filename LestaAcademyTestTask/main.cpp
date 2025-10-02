@@ -13,7 +13,7 @@ int main()
 
 	while (continueGame)
 	{
-		unsigned result = arena.Start();
+		arena.Start();
 
 		std::cout << "Start new game (1 - yes, 0 - no)? ";
 		while (!(std::cin >> continueGame).good())

@@ -16,20 +16,20 @@ BasePlayer::BasePlayer(int strength, int agility, int stamina)
 BasePlayer::~BasePlayer()
 {}
 
-void BasePlayer::TakeDamage(DamageInfo* damageInfo)
+void BasePlayer::TakeDamage(std::unique_ptr<DamageInfo> damageInfo)
 {
 	if (damageInfo == nullptr)
 		return;
 	currentHealth -= (damageInfo->weaponDamage + damageInfo->bonusDamage + damageInfo->attackerStrength);
 }
 
-DamageInfo* BasePlayer::GiveDamage(int enemyAgility)
+std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 {
 	currentTurn++;
 	if (IsAttackSuccess(enemyAgility))
 	{
-		DamageInfo* damageInfo = new DamageInfo{ weapon->damageType, weapon->damage, 0, strength };
-		return damageInfo;
+		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(weapon->damageType, weapon->damage, 0, strength);
+		return std::move(damageInfo);
 	}
 	return nullptr;
 }
@@ -65,20 +65,20 @@ PlayerClassLevel::PlayerClassLevel(std::unique_ptr<Player> player, int healthByL
 PlayerClassLevel::~PlayerClassLevel()
 {}
 
-DamageInfo* PlayerClassLevel::GiveDamage(int enemyAgility)
+std::unique_ptr<DamageInfo> PlayerClassLevel::GiveDamage(int enemyAgility)
 {
-	DamageInfo* damageInfo = player->GiveDamage(enemyAgility);
-	AcceptAbility(damageInfo, enemyAgility);
+	std::unique_ptr<DamageInfo> damageInfo = player->GiveDamage(enemyAgility);
+	AcceptAbility(damageInfo.get(), enemyAgility);
 	return damageInfo;
 }
 
-void PlayerClassLevel::TakeDamage(DamageInfo* damageInfo)
+void PlayerClassLevel::TakeDamage(std::unique_ptr<DamageInfo> damageInfo)
 {
 	if (damageInfo == nullptr)
 		return;
 
-	AcceptAbility(damageInfo);
-	player->TakeDamage(damageInfo);
+	AcceptAbility(damageInfo.get());
+	player->TakeDamage(std::move(damageInfo));
 }
 
 bool PlayerClassLevel::IsAttackSuccess(int enemyAgility)

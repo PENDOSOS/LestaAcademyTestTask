@@ -3,6 +3,7 @@
 #include "Spawner.h"
 #include "Weapon.h"
 #include "Printer.h"
+#include "Monster.h"
 
 #include <random>
 #include <iostream>
@@ -53,6 +54,8 @@ void Arena::SpawnPlayer()
 
 	Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
 	std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
+	printer->PrintPlayerStats(player.get());
+
 	characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->PromotePlayer(std::move(player));
 }
 
@@ -65,6 +68,8 @@ void Arena::SpawnEnemy()
 	int chosenEnemy = dist(rng);
 
 	characters[(int)CharacterTypesEnum::MONSTER] = spawners[chosenEnemy]->Spawn();
+
+	printer->PrintMonsterName(dynamic_cast<Monster*>(characters[(int)CharacterTypesEnum::MONSTER].get()));
 }
 
 void Arena::AfterBattle()

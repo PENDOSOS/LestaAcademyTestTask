@@ -3,6 +3,7 @@
 #include "Character.h"
 
 #include <memory>
+#include <string>
 
 struct Weapon;
 struct DamageInfo;
@@ -10,15 +11,17 @@ struct DamageInfo;
 class Monster : public Character
 {
 public:
-	Monster(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
+	Monster(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon, std::string name);
 	virtual ~Monster() override;
 	virtual std::unique_ptr<Weapon> DropWeapon();
 	virtual void AcceptAbility(DamageInfo* damageInfo) = 0;
 	virtual int GetAgility() override final { return agility; }
-	virtual DamageInfo* GiveDamage(int enemyAgility) override final;
-	virtual void TakeDamage(DamageInfo* damageInfo) override final;
+	virtual std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) override final;
+	virtual void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) override final;
 	virtual bool IsAttackSuccess(int enemyAgility) override final;
 	bool IsAlive() override final { return health > 0; }
+
+	const std::string& GetName() { return name; }
 protected:
 	int health;
 	int damage;
@@ -26,6 +29,7 @@ protected:
 	int agility;
 	int stamina;
 	std::unique_ptr<Weapon> drop;
+	std::string name;
 };
 
 class Goblin : public Monster
