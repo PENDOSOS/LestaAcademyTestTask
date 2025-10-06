@@ -41,10 +41,10 @@ public:
 
 	void ChangeWeapon(std::unique_ptr<Weapon> weapon) override final;
 	void UpdateTurn() override final { currentTurn = 0; }
-	void SetHealth(int health) override final { currentHealth = health; }
+	void SetHealth(int health) override final { currentHealth = health + stamina; }
 	void IncreaseStrength(int strength) override final { this->strength += strength; }
 	void IncreaseAgility(int agility) override final { this->agility += agility; }
-	void IncreaseStamina(int stamina) override final { this->stamina += stamina; }
+	void IncreaseStamina(int stamina) override final { this->stamina += stamina; this->currentHealth += stamina; }
 	int GetCurrentTurn() override final { return this->currentTurn; }
 
 	const std::string& GetName() override final { return name; }

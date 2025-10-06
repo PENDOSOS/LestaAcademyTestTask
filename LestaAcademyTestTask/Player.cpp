@@ -206,7 +206,9 @@ void ClassWarriorLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 ClassWarriorLevel3::ClassWarriorLevel3(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
-{}
+{
+	AcceptAbility();
+}
 
 void ClassWarriorLevel3::PrintLevelBonusInfo()
 {
@@ -271,7 +273,9 @@ void ClassBarbarianLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgilit
 ClassBarbarianLevel3::ClassBarbarianLevel3(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
-{}
+{
+	AcceptAbility();
+}
 
 void ClassBarbarianLevel3::PrintLevelBonusInfo()
 {
