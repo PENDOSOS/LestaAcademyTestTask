@@ -21,7 +21,6 @@ class Arena
 {
 public:
 	Arena();
-	void Initialize();
 	void Battle();
 	void AfterBattle();
 	unsigned Start();

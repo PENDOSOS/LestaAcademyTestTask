@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 struct DamageInfo;
 
@@ -32,4 +33,5 @@ public:
 	virtual bool IsAttackSuccess(int enemyAgility) = 0;
 	virtual bool IsAlive() = 0;
 	virtual int GetAgility() = 0;
+	virtual const std::string& GetName() = 0;
 };

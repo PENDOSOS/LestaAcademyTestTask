@@ -41,8 +41,19 @@ void Arena::Battle()
 
 	while (isCharactersAlive)
 	{
-		characters[defender]->TakeDamage(characters[attacker]->GiveDamage(characters[defender]->GetAgility()));
+		// у игрока не учитывыается выносливость в здоровье
+		std::unique_ptr<DamageInfo> damageInfo = characters[attacker]->GiveDamage(characters[defender]->GetAgility());
+		printer->PrintTurn(characters, attacker, defender, damageInfo.get());
+		characters[defender]->TakeDamage(std::move(damageInfo));
 		isCharactersAlive = characters[attacker]->IsAlive() && characters[defender]->IsAlive();
+
+		if (!characters[(int)CharacterTypesEnum::MONSTER]->IsAlive())
+		{
+			Monster* monster = static_cast<Monster*>(characters[(int)CharacterTypesEnum::MONSTER].get());
+			std::unique_ptr<Weapon> monsterDrop = monster->DropWeapon();
+			printer->PrintMonsterDrop(monster, monsterDrop.get());
+		}
+
 		attacker = (attacker + 1) % 2;
 		defender = (defender + 1) % 2;
 	}
@@ -82,6 +93,7 @@ void Arena::AfterBattle()
 		{
 			Character* characterRawPtr = characters[(int)CharacterTypesEnum::PLAYER].release();
 			std::unique_ptr<Player> player = std::unique_ptr<Player>(static_cast<Player*>(characterRawPtr));
+			player->UpdateTurn();
 			characters[(int)CharacterTypesEnum::PLAYER] = playerPromoter->PromotePlayer(std::move(player));
 		}
 	}

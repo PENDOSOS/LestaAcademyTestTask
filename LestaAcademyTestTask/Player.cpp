@@ -11,6 +11,7 @@ BasePlayer::BasePlayer(int strength, int agility, int stamina)
 	, stamina(stamina)
 	, currentTurn(0)
 	, weapon(nullptr)
+	, name("Player")
 {}
 
 BasePlayer::~BasePlayer()

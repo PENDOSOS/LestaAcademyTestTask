@@ -7,7 +7,7 @@
 
 class Player;
 class WeaponProducer;
-class Wepaon;
+struct Wepaon;
 class Printer;
 
 class PlayerPromoter

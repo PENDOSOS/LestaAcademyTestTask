@@ -40,12 +40,14 @@ public:
 	int GetStamina() override final { return stamina; }
 
 	void ChangeWeapon(std::unique_ptr<Weapon> weapon) override final;
-	void UpdateTurn() override final { currentTurn++; }
+	void UpdateTurn() override final { currentTurn = 0; }
 	void SetHealth(int health) override final { currentHealth = health; }
 	void IncreaseStrength(int strength) override final { this->strength += strength; }
 	void IncreaseAgility(int agility) override final { this->agility += agility; }
 	void IncreaseStamina(int stamina) override final { this->stamina += stamina; }
 	int GetCurrentTurn() override final { return this->currentTurn; }
+
+	const std::string& GetName() override final { return name; }
 private:
 	int currentHealth;
 	int strength;
@@ -54,6 +56,8 @@ private:
 
 	unsigned currentTurn;
 	std::unique_ptr<Weapon> weapon;
+
+	std::string name;
 };
 
 enum struct PlayerClassesEnum
@@ -65,7 +69,6 @@ enum struct PlayerClassesEnum
 	TOTAL_CLASSES
 };
 
-// этот класс просто прослойка между Player и декораторами уровней
 class PlayerClassLevel : public Player
 {
 public:
@@ -89,6 +92,8 @@ public:
 	void IncreaseAgility(int agility) override final { player->IncreaseAgility(agility); }
 	void IncreaseStamina(int stamina) override final { player->IncreaseStamina(stamina); }
 	int GetCurrentTurn() { return player->GetCurrentTurn(); }
+
+	const std::string& GetName() override final { return player->GetName(); }
 protected:
 	virtual void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) = 0;
 

@@ -21,7 +21,7 @@ public:
 	virtual bool IsAttackSuccess(int enemyAgility) override final;
 	bool IsAlive() override final { return health > 0; }
 
-	const std::string& GetName() { return name; }
+	const std::string& GetName() override final { return name; }
 protected:
 	int health;
 	int damage;
