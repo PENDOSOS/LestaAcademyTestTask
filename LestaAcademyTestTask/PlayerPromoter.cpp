@@ -2,40 +2,21 @@
 #include "Player.h"
 #include "Weapon.h"
 #include "Printer.h"
+#include "Controller.h"
 
 #include <iostream>
 
-PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer)
-	: arsenal(arsenal), printer(printer)
-{}
+PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer, Controller* controller)
+	: arsenal(arsenal), printer(printer), controller(controller)
+{
+	ReinitLevels();
+}
 
 std::unique_ptr<Player> PlayerPromoter::PromotePlayer(std::unique_ptr<Player> player)
 {
-	int chosenClass = -1;
-	bool isInputCorrect = false; 
-	while (!isInputCorrect)
-	{
-		printer->PrintPlayerPromoteInfo(classLevels);
-		if ((std::cin >> chosenClass).good()) 
-		{
-			if (chosenClass >= 1 && chosenClass <= 3) 
-			{
-				isInputCorrect = true;
-			}
-			else 
-			{
-				std::cout << "Invalid class number. Please try again.\n";
-			}
-		}
-		else 
-		{
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid input. Please enter a number.\n";
-		}
-	}
-	
-	chosenClass--;
+	printer->PrintPlayerPromoteInfo(classLevels);
+
+	int chosenClass = controller->ControlPromotePlayer();
 
 	switch (chosenClass)
 	{

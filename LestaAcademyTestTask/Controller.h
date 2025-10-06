@@ -7,11 +7,13 @@ class Printer;
 class Controller
 {
 public:
-	Controller(std::shared_ptr<Printer> printer = nullptr);
+	Controller() : printer(nullptr) {}
 
-	void StartGame();
+	void SetPrinter(std::shared_ptr<Printer> printer);
+
+	bool StartGame();
 	bool RestartGame();
-	void PromotePlayer();
+	int ControlPromotePlayer();
 private:
 	std::shared_ptr<Printer> printer;
 };

@@ -10,6 +10,7 @@ class Character;
 class Spawner;
 class Weapon;
 class Printer;
+class Controller;
 
 enum GameStatus
 {
@@ -20,7 +21,7 @@ enum GameStatus
 class Arena
 {
 public:
-	Arena();
+	Arena(Controller* controller);
 	void Battle();
 	void AfterBattle();
 	unsigned Start();
@@ -38,4 +39,6 @@ private:
 
 	unsigned countDefeatedMonsters;
 	unsigned numberOfDefeatedMonstersToWin = 3;
+
+	Controller* controller;
 };

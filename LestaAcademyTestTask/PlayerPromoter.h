@@ -9,11 +9,12 @@ class Player;
 class WeaponProducer;
 struct Wepaon;
 class Printer;
+class Controller;
 
 class PlayerPromoter
 {
 public:
-	PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer);
+	PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer, Controller* controller);
 	std::unique_ptr<Player> PromotePlayer(std::unique_ptr<Player> player);
 
 	void ReinitLevels();
@@ -24,6 +25,7 @@ private:
 
 	std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal;
 	std::shared_ptr<Printer> printer;
+	Controller* controller;
 
 	unsigned classLevels[(int)PlayerClassesEnum::TOTAL_CLASSES];
 };

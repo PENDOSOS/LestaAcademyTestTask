@@ -4,11 +4,12 @@
 #include "Weapon.h"
 #include "Printer.h"
 #include "Monster.h"
+#include "Controller.h"
 
 #include <random>
 #include <iostream>
 
-Arena::Arena() : countDefeatedMonsters(0)
+Arena::Arena(Controller* controller) : countDefeatedMonsters(0), controller(controller)
 {
 	printer = std::make_shared<Printer>();
 
@@ -20,7 +21,7 @@ Arena::Arena() : countDefeatedMonsters(0)
 	arsenal->emplace_back(std::make_shared<LanceProducer>());
 	arsenal->emplace_back(std::make_shared<LegendarySwordProducer>());
 
-	playerPromoter = std::make_unique<PlayerPromoter>(arsenal, printer);
+	playerPromoter = std::make_unique<PlayerPromoter>(arsenal, printer, controller);
 
 	spawners.push_back(std::make_unique<PlayerSpawner>(arsenal));
 	spawners.push_back(std::make_unique<GoblinSpawner>(arsenal));
@@ -29,6 +30,8 @@ Arena::Arena() : countDefeatedMonsters(0)
 	spawners.push_back(std::make_unique<GhostSpawner>(arsenal));
 	spawners.push_back(std::make_unique<GolemSpawner>(arsenal));
 	spawners.push_back(std::make_unique<DragonSpawner>(arsenal));
+
+	controller->SetPrinter(printer);
 }
 
 void Arena::Battle()

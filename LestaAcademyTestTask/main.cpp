@@ -7,12 +7,10 @@ using namespace std;
 
 int main()
 {
-	Arena arena;
 	Controller controller;
+	Arena arena(&controller);
 
-	controller.StartGame();
-
-	bool continueGame = true;
+	bool continueGame = controller.StartGame();
 
 	while (continueGame)
 	{
