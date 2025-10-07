@@ -28,6 +28,7 @@ public:
 	void PrintMonsterName(Monster* monster);
 
 	void PrintMonsterDrop(Monster* monster, Weapon* weapon);
+	void PrintChangeWeapon(Weapon* weapon);
 	
 	void PrintTurn(std::unique_ptr<Character>* characters, unsigned attacker, unsigned defender, DamageInfo* damage);
 private:

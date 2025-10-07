@@ -62,3 +62,29 @@ int Controller::ControlPromotePlayer()
 	return chosenClass;
 }
 
+bool Controller::ControlChangeWeapon()
+{
+	bool changeWeapon = false;
+
+	bool isInputCorrect = false;
+	while (!isInputCorrect)
+	{
+		if ((std::cin >> changeWeapon).good())
+		{
+			isInputCorrect = changeWeapon <= 1 && changeWeapon >= 0;
+			if (!isInputCorrect)
+			{
+				std::cout << "Invalid input. Please try again.\n";
+			}
+		}
+		else
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter a number";
+		}
+	}
+
+	return changeWeapon;
+}
+

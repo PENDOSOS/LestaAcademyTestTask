@@ -37,13 +37,13 @@ std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 
 void BasePlayer::ChangeWeapon(std::unique_ptr<Weapon> weapon)
 {
-	bool changeWeapon = true;
+	/*bool changeWeapon = true;
 	if (this->weapon != nullptr)
 	{
 		std::cout << "Change cuurent weapon to " << weapon->name << "? (1 - Yes, 0 - No): " << std::endl;
 		std::cin >> changeWeapon;
 	}
-	if (changeWeapon)
+	if (changeWeapon)*/
 		std::swap(this->weapon, weapon);
 }
 
@@ -95,11 +95,9 @@ void PlayerClassLevel::ChangeWeapon(std::unique_ptr<Weapon> weapon)
 
 #define CLASS_BANDIT_HEALTH_BY_LEVEL 4
 
-ClassBanditLevel1::ClassBanditLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+ClassBanditLevel1::ClassBanditLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
-{
-	this->player->ChangeWeapon(std::move(startWeapon));
-}
+{}
 
 void ClassBanditLevel1::PrintLevelBonusInfo()
 {
@@ -160,11 +158,9 @@ void ClassBanditLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 
 #define CLASS_WARRIOR_HEALTH_BY_LEVEL 5
 
-ClassWarriorLevel1::ClassWarriorLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+ClassWarriorLevel1::ClassWarriorLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
-{
-	this->player->ChangeWeapon(std::move(startWeapon));
-}
+{}
 
 void ClassWarriorLevel1::PrintLevelBonusInfo()
 {
@@ -226,11 +222,9 @@ void ClassWarriorLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 
 #define CLASS_WARRIOR_HEALTH_BY_LEVEL 6
 
-ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon)
+ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
-{
-	ChangeWeapon(std::move(startWeapon));
-}
+{}
 
 void ClassBarbarianLevel1::PrintLevelBonusInfo()
 {

@@ -12,19 +12,13 @@ class Weapon;
 class Printer;
 class Controller;
 
-enum GameStatus
-{
-	PLAYER_WON = 0,
-	PLAYER_LOST
-};
-
 class Arena
 {
 public:
 	Arena(Controller* controller);
 	void Battle();
 	void AfterBattle();
-	unsigned Start();
+	void Start();
 
 private:
 	void SpawnPlayer();

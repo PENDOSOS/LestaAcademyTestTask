@@ -14,6 +14,7 @@ public:
 	bool StartGame();
 	bool RestartGame();
 	int ControlPromotePlayer();
+	bool ControlChangeWeapon();
 private:
 	std::shared_ptr<Printer> printer;
 };

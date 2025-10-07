@@ -59,7 +59,12 @@ void Printer::PrintMonsterName(Monster* monster)
 
 void Printer::PrintMonsterDrop(Monster* monster, Weapon* weapon)
 {
-	std::cout << monster->GetName() << " dropped " << weapon->name << "." << "Change your character's weapon to it?" << std::endl;
+	std::cout << monster->GetName() << " dropped " << weapon->name << "." << std::endl;
+}
+
+void Printer::PrintChangeWeapon(Weapon* weapon)
+{
+	std::cout << "You can change your character's weapon to " << weapon->name << ".\n Change? (1 - yes, 0 - no)" << std::endl;
 }
 
 void Printer::PrintTurn(std::unique_ptr<Character>* characters, unsigned attacker, unsigned defender, DamageInfo* damage)

@@ -10,6 +10,7 @@ class Player : public Character
 {
 public:
 	virtual ~Player() = 0 {}
+	virtual const Weapon* GetWeapon() = 0;
 	virtual void ChangeWeapon(std::unique_ptr<Weapon> weapon) = 0;
 	virtual void UpdateTurn() = 0;
 	virtual void SetHealth(int health) = 0;
@@ -39,6 +40,7 @@ public:
 	int GetStrength() override final { return strength; }
 	int GetStamina() override final { return stamina; }
 
+	const Weapon* GetWeapon() override final { return weapon.get(); }
 	void ChangeWeapon(std::unique_ptr<Weapon> weapon) override final;
 	void UpdateTurn() override final { currentTurn = 0; }
 	void SetHealth(int health) override final { currentHealth = health + stamina; }
@@ -83,6 +85,7 @@ public:
 	bool IsAttackSuccess(int enemyAgility) override final;
 	bool IsAlive() override final { return player->IsAlive(); }
 	void ChangeWeapon(std::unique_ptr<Weapon> weapon) override final;
+	const Weapon* GetWeapon() override final { return player->GetWeapon(); }
 	
 	virtual void PrintLevelBonusInfo() = 0;
 
@@ -113,7 +116,7 @@ enum struct PlayerClassLevelsEnum
 class ClassBanditLevel1 : public PlayerClassLevel
 {
 public:
-	ClassBanditLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
+	ClassBanditLevel1(std::unique_ptr<Player> player);
 	~ClassBanditLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -147,7 +150,7 @@ private:
 class ClassWarriorLevel1 : public PlayerClassLevel
 {
 public:
-	ClassWarriorLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
+	ClassWarriorLevel1(std::unique_ptr<Player> player);
 	~ClassWarriorLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:
@@ -179,7 +182,7 @@ private:
 class ClassBarbarianLevel1 : public PlayerClassLevel
 {
 public:
-	ClassBarbarianLevel1(std::unique_ptr<Player> player, std::unique_ptr<Weapon> startWeapon);
+	ClassBarbarianLevel1(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel1() override final {}
 	void PrintLevelBonusInfo() override final;
 private:

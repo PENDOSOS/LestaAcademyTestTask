@@ -46,8 +46,21 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBandit(std::unique_ptr<Player> pl
 	switch (currentClassLevel)
 	{
 	case (int)PlayerClassLevelsEnum::LEVEL_1:
-		promoted = std::make_unique<ClassBanditLevel1>(std::move(player), arsenal->data()[DAGGER]->GiveWeapon());
+	{
+		promoted = std::make_unique<ClassBanditLevel1>(std::move(player));
+		
+		std::unique_ptr<Weapon> startWeapon = arsenal->data()[DAGGER]->GiveWeapon();
+		bool changeWeapon = true;
+		if (promoted->GetWeapon() != nullptr)
+		{
+			printer->PrintChangeWeapon(startWeapon.get());
+			changeWeapon = controller->ControlChangeWeapon();
+		}
+		if (changeWeapon)
+			promoted->ChangeWeapon(std::move(startWeapon));
+
 		break;
+	}
 	case (int)PlayerClassLevelsEnum::LEVEL_2:
 		promoted = std::make_unique<ClassBanditLevel2>(std::move(player));
 		break;
@@ -68,8 +81,21 @@ std::unique_ptr<Player> PlayerPromoter::PromoteWarrior(std::unique_ptr<Player> p
 	switch (currentClassLevel)
 	{
 	case (int)PlayerClassLevelsEnum::LEVEL_1:
-		promoted = std::make_unique<ClassWarriorLevel1>(std::move(player), arsenal->data()[SWORD]->GiveWeapon());
+	{
+		promoted = std::make_unique<ClassWarriorLevel1>(std::move(player));
+		
+		std::unique_ptr<Weapon> startWeapon = arsenal->data()[SWORD]->GiveWeapon();
+		bool changeWeapon = true;
+		if (promoted->GetWeapon() != nullptr)
+		{
+			printer->PrintChangeWeapon(startWeapon.get());
+			changeWeapon = controller->ControlChangeWeapon();
+		}
+		if (changeWeapon)
+			promoted->ChangeWeapon(std::move(startWeapon));
+
 		break;
+	}
 	case (int)PlayerClassLevelsEnum::LEVEL_2:
 		promoted = std::make_unique<ClassWarriorLevel2>(std::move(player));
 		break;
@@ -90,8 +116,21 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player>
 	switch (currentClassLevel)
 	{
 	case (int)PlayerClassLevelsEnum::LEVEL_1:
-		promoted = std::make_unique<ClassBarbarianLevel1>(std::move(player), arsenal->data()[CUDGEL]->GiveWeapon());
+	{
+		promoted = std::make_unique<ClassBarbarianLevel1>(std::move(player));
+
+		std::unique_ptr<Weapon> startWeapon = arsenal->data()[CUDGEL]->GiveWeapon();
+		bool changeWeapon = true;
+		if (promoted->GetWeapon() != nullptr)
+		{
+			printer->PrintChangeWeapon(startWeapon.get());
+			changeWeapon = controller->ControlChangeWeapon();
+		}
+		if (changeWeapon)
+			promoted->ChangeWeapon(std::move(startWeapon));
+		
 		break;
+	}
 	case (int)PlayerClassLevelsEnum::LEVEL_2:
 		promoted = std::make_unique<ClassBarbarianLevel2>(std::move(player));
 		break;
