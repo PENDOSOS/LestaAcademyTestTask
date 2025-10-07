@@ -9,7 +9,7 @@ Monster::Monster(int health, int damage, int strength, int agility, int stamina,
 	, stamina(stamina)
 	, drop(std::move(weapon))
 	, damage(damage)
-	, health(health)
+	, health(health + stamina)
 	, name(name)
 {
 }

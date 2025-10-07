@@ -44,7 +44,6 @@ void Arena::Battle()
 
 	while (isCharactersAlive)
 	{
-		// у игрока не учитывыается выносливость в здоровье
 		std::unique_ptr<DamageInfo> damageInfo = characters[attacker]->GiveDamage(characters[defender]->GetAgility());
 		printer->PrintTurn(characters, attacker, defender, damageInfo.get());
 		characters[defender]->TakeDamage(std::move(damageInfo));
