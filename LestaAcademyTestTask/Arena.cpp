@@ -37,8 +37,13 @@ Arena::Arena(Controller* controller) : countDefeatedMonsters(0), controller(cont
 void Arena::Battle()
 {
 	bool isCharactersAlive = true;
-	unsigned attacker = 0;
-	unsigned defender = 1;
+
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1);
+
+	unsigned attacker = dist(rng);	
+	unsigned defender = (attacker + 1) % 2;
 
 	SpawnEnemy();
 
