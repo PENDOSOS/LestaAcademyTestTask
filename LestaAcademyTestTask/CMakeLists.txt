@@ -1,12 +1,5 @@
-﻿# CMakeList.txt: проект CMake для LestaAcademyTestTask; включите исходный код и определения,
-# укажите здесь логику для конкретного проекта.
-#
-
-# Добавьте источник в исполняемый файл этого проекта.
-add_executable (LestaAcademyTestTask "main.cpp" "main.h" "Weapon.h" "Weapon.cpp" "Monster.h" "Monster.cpp" "Character.h" "Player.h" "Player.cpp" "Spawner.h" "Spawner.cpp" "Arena.h" "Arena.cpp" "PlayerPromoter.h" "PlayerPromoter.cpp" "Printer.h" "Printer.cpp" "Controller.h" "Controller.cpp")
+﻿add_executable (LestaAcademyTestTask "main.cpp"  "Weapon.h" "Weapon.cpp" "Monster.h" "Monster.cpp" "Character.h" "Player.h" "Player.cpp" "Spawner.h" "Spawner.cpp" "Arena.h" "Arena.cpp" "PlayerPromoter.h" "PlayerPromoter.cpp" "Printer.h" "Printer.cpp" "Controller.h" "Controller.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LestaAcademyTestTask PROPERTY CXX_STANDARD 20)
 endif()
-
-# TODO: Добавьте тесты и целевые объекты, если это необходимо.

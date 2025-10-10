@@ -37,14 +37,7 @@ std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 
 void BasePlayer::ChangeWeapon(std::unique_ptr<Weapon> weapon)
 {
-	/*bool changeWeapon = true;
-	if (this->weapon != nullptr)
-	{
-		std::cout << "Change cuurent weapon to " << weapon->name << "? (1 - Yes, 0 - No): " << std::endl;
-		std::cin >> changeWeapon;
-	}
-	if (changeWeapon)*/
-		std::swap(this->weapon, weapon);
+	std::swap(this->weapon, weapon);
 }
 
 bool BasePlayer::IsAttackSuccess(int enemyAgility)
@@ -99,11 +92,6 @@ ClassBanditLevel1::ClassBanditLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
 {}
 
-void ClassBanditLevel1::PrintLevelBonusInfo()
-{
-	std::cout << "Bandit 1 level. Ability: silent attack - gives 1 additional damage if player agility is more than enemy agility." << std::endl;
-}
-
 void ClassBanditLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
 	// accept ability if attack success or player gives damage
@@ -121,11 +109,6 @@ ClassBanditLevel2::ClassBanditLevel2(std::unique_ptr<Player> player)
 	AcceptAbility();
 }
 
-void ClassBanditLevel2::PrintLevelBonusInfo()
-{
-	std::cout << "Bandit 2 level. Ability: gives 1 additional agility." << std::endl;
-}
-
 void ClassBanditLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
 	if (!abilityAccepted)
@@ -138,11 +121,6 @@ void ClassBanditLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 ClassBanditLevel3::ClassBanditLevel3(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_BANDIT_HEALTH_BY_LEVEL)
 {}
-
-void ClassBanditLevel3::PrintLevelBonusInfo()
-{
-	std::cout << "Bandit 3 level. Ability: poison - gives 1 additional damage on second turn, 2 additional damage on third turn etc." << std::endl;
-}
 
 void ClassBanditLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
@@ -162,11 +140,6 @@ ClassWarriorLevel1::ClassWarriorLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
 
-void ClassWarriorLevel1::PrintLevelBonusInfo()
-{
-	std::cout << "Warrior 1 level. Ability: impulse to action - player gives double damage in first turn." << std::endl;
-}
-
 void ClassWarriorLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
 	if (damageInfo == nullptr || damageInfo->damageType == MONSTER_DAMAGE)
@@ -181,11 +154,6 @@ void ClassWarriorLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 ClassWarriorLevel2::ClassWarriorLevel2(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
-
-void ClassWarriorLevel2::PrintLevelBonusInfo()
-{
-	std::cout << "Warrior 2 level. Ability: shield - player takes 3 damage less if his strength more than attacker strength." << std::endl;
-}
 
 void ClassWarriorLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
@@ -206,11 +174,6 @@ ClassWarriorLevel3::ClassWarriorLevel3(std::unique_ptr<Player> player)
 	AcceptAbility();
 }
 
-void ClassWarriorLevel3::PrintLevelBonusInfo()
-{
-	std::cout << "Warrior 3 level. Ability: gives 1 additional strength." << std::endl;
-}
-
 void ClassWarriorLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
 	if (!abilityAccepted)
@@ -225,11 +188,6 @@ void ClassWarriorLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
-
-void ClassBarbarianLevel1::PrintLevelBonusInfo()
-{
-	std::cout << "Barbarian 1 level. Ability: player gives 2 additional damage in first three turns. Every next turn player gives 1 damage less." << std::endl;
-}
 
 void ClassBarbarianLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
@@ -251,11 +209,6 @@ ClassBarbarianLevel2::ClassBarbarianLevel2(std::unique_ptr<Player> player)
 	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
 {}
 
-void ClassBarbarianLevel2::PrintLevelBonusInfo()
-{
-	std::cout << "Barbarian 2 level. Ability: taken damage is reduces by the amount of stamina." << std::endl;
-}
-
 void ClassBarbarianLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 {
 	if (damageInfo == nullptr || damageInfo->damageType != MONSTER_DAMAGE)
@@ -269,11 +222,6 @@ ClassBarbarianLevel3::ClassBarbarianLevel3(std::unique_ptr<Player> player)
 	, abilityAccepted(false)
 {
 	AcceptAbility();
-}
-
-void ClassBarbarianLevel3::PrintLevelBonusInfo()
-{
-	std::cout << "Barbarian 3 level. Ability: gives 1 additional stamina." << std::endl;
 }
 
 void ClassBarbarianLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)

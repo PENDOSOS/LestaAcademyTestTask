@@ -1,4 +1,7 @@
-﻿#include "main.h"
+﻿#include "Weapon.h"
+#include "Spawner.h"
+#include "Arena.h"
+#include "Controller.h"
 
 #include <vector>
 #include <memory>
@@ -18,8 +21,6 @@ int main()
 
 		continueGame = controller.RestartGame();
 	}
-
-	//controller.EndGame();
 
 	return 0;
 }

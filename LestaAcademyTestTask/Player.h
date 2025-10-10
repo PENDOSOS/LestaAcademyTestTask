@@ -22,8 +22,6 @@ public:
 	virtual int GetStamina() = 0;
 };
 
-// возможно стоит вынести счетчик текущего хода в классы,
-// которым дествительно нужно знать о том, какой сейчас ход
 class BasePlayer : public Player
 {
 public:
@@ -32,8 +30,6 @@ public:
 
 	void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) override final;
 	std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) override final;
-	// IsAttackSuccess по архитектуре не должен вызываться извне
-	// возможно, чтоит его вынести в protected
 	bool IsAttackSuccess(int enemyAgility) override final;
 	bool IsAlive() override final { return currentHealth > 0; }
 	int GetAgility() override final { return agility; }
@@ -86,8 +82,6 @@ public:
 	bool IsAlive() override final { return player->IsAlive(); }
 	void ChangeWeapon(std::unique_ptr<Weapon> weapon) override final;
 	const Weapon* GetWeapon() override final { return player->GetWeapon(); }
-	
-	virtual void PrintLevelBonusInfo() = 0;
 
 	void UpdateTurn() override final { player->UpdateTurn(); }
 	void SetHealth(int health) override final { player->SetHealth(healthByLevel + health); }
@@ -118,7 +112,6 @@ class ClassBanditLevel1 : public PlayerClassLevel
 public:
 	ClassBanditLevel1(std::unique_ptr<Player> player);
 	~ClassBanditLevel1() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility) override final;
 };
@@ -128,7 +121,6 @@ class ClassBanditLevel2 : public PlayerClassLevel
 public:
 	ClassBanditLevel2(std::unique_ptr<Player> player);
 	~ClassBanditLevel2() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
 
@@ -138,10 +130,8 @@ private:
 class ClassBanditLevel3 : public PlayerClassLevel
 {
 public:
-	// возможно стоит убрать healthByLevel из контсруктора и сделать константу в каждом классе
 	ClassBanditLevel3(std::unique_ptr<Player> player);
 	~ClassBanditLevel3() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility = -1) override final;
 };
@@ -152,7 +142,6 @@ class ClassWarriorLevel1 : public PlayerClassLevel
 public:
 	ClassWarriorLevel1(std::unique_ptr<Player> player);
 	~ClassWarriorLevel1() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility = -1) override final;
 };
@@ -162,7 +151,6 @@ class ClassWarriorLevel2 : public PlayerClassLevel
 public:
 	ClassWarriorLevel2(std::unique_ptr<Player> player);
 	~ClassWarriorLevel2() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo, int enemyAgility = -1) override final;
 };
@@ -172,7 +160,6 @@ class ClassWarriorLevel3 : public PlayerClassLevel
 public:
 	ClassWarriorLevel3(std::unique_ptr<Player> player);
 	~ClassWarriorLevel3() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
 
@@ -184,7 +171,6 @@ class ClassBarbarianLevel1 : public PlayerClassLevel
 public:
 	ClassBarbarianLevel1(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel1() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
 };
@@ -194,7 +180,6 @@ class ClassBarbarianLevel2 : public PlayerClassLevel
 public:
 	ClassBarbarianLevel2(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel2() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
 };
@@ -204,7 +189,6 @@ class ClassBarbarianLevel3 : public PlayerClassLevel
 public:
 	ClassBarbarianLevel3(std::unique_ptr<Player> player);
 	~ClassBarbarianLevel3() override final {}
-	void PrintLevelBonusInfo() override final;
 private:
 	void AcceptAbility(DamageInfo* damageInfo = nullptr, int enemyAgility = -1) override final;
 
