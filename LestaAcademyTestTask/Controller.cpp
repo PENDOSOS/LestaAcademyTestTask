@@ -2,6 +2,7 @@
 #include "Printer.h"
 
 #include <iostream>
+#include <limits>
 
 void Controller::SetPrinter(std::shared_ptr<Printer> printer)
 {
