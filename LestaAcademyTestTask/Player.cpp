@@ -4,6 +4,8 @@
 #include <random>
 #include <iostream>
 
+Player::~Player() {}
+
 BasePlayer::BasePlayer(int strength, int agility, int stamina)
 	: currentHealth(0)
 	, strength(strength)
