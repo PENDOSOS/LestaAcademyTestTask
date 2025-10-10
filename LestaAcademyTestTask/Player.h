@@ -9,7 +9,7 @@ struct Weapon;
 class Player : public Character
 {
 public:
-	virtual ~Player() = 0 {}
+	virtual ~Player() = 0;
 	virtual const Weapon* GetWeapon() = 0;
 	virtual void ChangeWeapon(std::unique_ptr<Weapon> weapon) = 0;
 	virtual void UpdateTurn() = 0;
