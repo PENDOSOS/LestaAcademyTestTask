@@ -5,6 +5,7 @@
 #include "Controller.h"
 
 #include <iostream>
+#include <cstring>
 
 PlayerPromoter::PlayerPromoter(std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal, std::shared_ptr<Printer> printer, Controller* controller)
 	: arsenal(arsenal), printer(printer), controller(controller)
