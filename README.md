@@ -3,7 +3,7 @@
 ## Build instructions
 
 ~~~
-git clone
+git clone https://github.com/PENDOSOS/LestaAcademyTestTask.git
 ~~~
 
 ~~~
