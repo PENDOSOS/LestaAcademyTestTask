@@ -1,5 +1,19 @@
 # LestaAcademyTestTask
 
+## Build instructions
+
+~~~
+git clone
+~~~
+
+~~~
+cd LestaAcademyTestTask
+mkdir build
+cd build
+cmake ..
+cmake --build .
+~~~
+
 ## Main Game Cycle
 
 1. At the beginning, the player chooses a character class (warrior, barbarian, or bandit).
