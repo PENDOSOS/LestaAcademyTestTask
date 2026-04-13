@@ -32,7 +32,7 @@ std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 	if (IsAttackSuccess(enemyAgility))
 	{
 		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(weapon->damageType, weapon->damage, 0, strength);
-		return std::move(damageInfo);
+		return damageInfo;
 	}
 	return nullptr;
 }

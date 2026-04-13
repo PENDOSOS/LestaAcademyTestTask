@@ -72,7 +72,7 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBandit(std::unique_ptr<Player> pl
 		break;
 	}
 
-	return std::move(promoted);
+	return promoted;
 }
 
 std::unique_ptr<Player> PlayerPromoter::PromoteWarrior(std::unique_ptr<Player> player)
@@ -107,7 +107,7 @@ std::unique_ptr<Player> PlayerPromoter::PromoteWarrior(std::unique_ptr<Player> p
 		break;
 	}
 
-	return std::move(promoted);
+	return promoted;
 }
 
 std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player> player)
@@ -142,7 +142,7 @@ std::unique_ptr<Player> PlayerPromoter::PromoteBarbarian(std::unique_ptr<Player>
 		break;
 	}
 
-	return std::move(promoted);
+	return promoted;
 }
 
 void PlayerPromoter::ReinitLevels()

@@ -12,16 +12,16 @@ class Monster : public Character
 {
 public:
 	Monster(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon, std::string name);
-	virtual ~Monster() override;
+	~Monster() override;
 	virtual std::unique_ptr<Weapon> DropWeapon();
 	virtual void AcceptAbility(DamageInfo* damageInfo) = 0;
-	virtual int GetAgility() override final { return agility; }
-	virtual std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) override final;
-	virtual void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) override final;
-	virtual bool IsAttackSuccess(int enemyAgility) override final;
-	bool IsAlive() override final { return health > 0; }
+	virtual int GetAgility() final { return agility; }
+	std::unique_ptr<DamageInfo> GiveDamage(int enemyAgility) final;
+	void TakeDamage(std::unique_ptr<DamageInfo> damageInfo) final;
+	bool IsAttackSuccess(int enemyAgility) final;
+	bool IsAlive() final { return health > 0; }
 
-	const std::string& GetName() override final { return name; }
+	const std::string& GetName() final { return name; }
 protected:
 	int health;
 	int damage;
@@ -36,48 +36,48 @@ class Goblin : public Monster
 {
 public:
 	Goblin(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Goblin() override {}
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final {}
+	~Goblin() final {}
+	void AcceptAbility(DamageInfo* damageInfo) final {}
 };
 
 class Skeleton : public Monster
 {
 public:
 	Skeleton(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Skeleton() override final {}
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
+	~Skeleton() final {}
+	void AcceptAbility(DamageInfo* damageInfo) final;
 };
 
 class Slime : public Monster
 {
 public:
 	Slime(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Slime() override final {};
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
+	~Slime()final {};
+	void AcceptAbility(DamageInfo* damageInfo) final;
 };
 
 class Ghost : public Monster
 {
 public:
 	Ghost(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Ghost() override final {};
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
+	~Ghost() final {};
+	void AcceptAbility(DamageInfo* damageInfo) final;
 };
 
 class Golem : public Monster
 {
 public:
 	Golem(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	virtual ~Golem() override final {};
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
+	~Golem() final {};
+	void AcceptAbility(DamageInfo* damageInfo) final;
 };
 
 class Dragon : public Monster
 {
 public:
 	Dragon(int health, int damage, int strength, int agility, int stamina, std::unique_ptr<Weapon> weapon);
-	~Dragon() override final {}
-	virtual void AcceptAbility(DamageInfo* damageInfo) override final;
+	~Dragon() final {}
+	void AcceptAbility(DamageInfo* damageInfo) final;
 protected:
 	unsigned currentTurn;
 };

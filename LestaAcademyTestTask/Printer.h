@@ -11,26 +11,22 @@ struct Weapon;
 class Printer
 {
 public:
-	void PrintStartMessage();
+	static void PrintStartMessage();
 
-	void PrintTurnResult() {};
-	void PrintBattleResult(std::unique_ptr<Character>* characters);
+	static void PrintBattleResult(std::unique_ptr<Character>* characters);
 
-	void PrintPlayerSpawnInfo() {};
-	void PrintMonsterSpawnInfo() {};
+	static void PrintPlayerPromoteInfo(unsigned* classLevels);
 
-	void PrintPlayerPromoteInfo(unsigned* classLevels);
+	static void PrintGameWon();
+	static void PrintGameOver();
 
-	void PrintGameWon();
-	void PrintGameOver();
+	static void PrintPlayerStats(Player* player);
+	static void PrintMonsterName(Monster* monster);
 
-	void PrintPlayerStats(Player* player);
-	void PrintMonsterName(Monster* monster);
-
-	void PrintMonsterDrop(Monster* monster, Weapon* weapon);
-	void PrintChangeWeapon(Weapon* weapon);
+	static void PrintMonsterDrop(Monster* monster, Weapon* weapon);
+	static void PrintChangeWeapon(Weapon* weapon);
 	
-	void PrintTurn(std::unique_ptr<Character>* characters, unsigned attacker, unsigned defender, DamageInfo* damage);
+	static void PrintTurn(std::unique_ptr<Character>* characters, unsigned attacker, unsigned defender, DamageInfo* damage);
 private:
-	void PrintHeader();
+	static void PrintHeader();
 };

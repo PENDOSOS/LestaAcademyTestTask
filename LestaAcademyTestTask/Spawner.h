@@ -19,14 +19,14 @@ protected:
 class PlayerSpawner : public Spawner
 {
 public:
-	PlayerSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit PlayerSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 };
 
 class GoblinSpawner : public Spawner
 {
 public:
-	GoblinSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit GoblinSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int goblinHealth = 5;
@@ -39,7 +39,7 @@ private:
 class SkeletonSpawner : public Spawner
 {
 public:
-	SkeletonSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit SkeletonSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int skeletonHealth = 10;
@@ -52,7 +52,7 @@ private:
 class GhostSpawner : public Spawner
 {
 public:
-	GhostSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit GhostSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int ghostHealth = 6;
@@ -65,7 +65,7 @@ private:
 class SlimeSpawner : public Spawner
 {
 public:
-	SlimeSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit SlimeSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int slimeHealth = 8;
@@ -78,7 +78,7 @@ private:
 class GolemSpawner : public Spawner
 {
 public:
-	GolemSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit GolemSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int golemHealth = 10;
@@ -91,7 +91,7 @@ private:
 class DragonSpawner : public Spawner
 {
 public:
-	DragonSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
+	explicit DragonSpawner(std::weak_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal);
 	std::unique_ptr<Character> Spawn() override final;
 private:
 	int dragonHealth = 20;

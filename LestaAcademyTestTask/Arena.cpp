@@ -9,10 +9,8 @@
 #include <random>
 #include <iostream>
 
-Arena::Arena(Controller* controller) : countDefeatedMonsters(0), controller(controller)
+Arena::Arena(Controller* controller) : printer(std::make_shared<Printer>()), countDefeatedMonsters(0), controller(controller)
 {
-	printer = std::make_shared<Printer>();
-
 	std::shared_ptr<std::vector<std::shared_ptr<WeaponProducer>>> arsenal = std::make_shared<std::vector<std::shared_ptr<WeaponProducer>>>();
 	arsenal->emplace_back(std::make_shared<SwordProducer>());
 	arsenal->emplace_back(std::make_shared<CudgelProducer>());

@@ -28,7 +28,7 @@ std::unique_ptr<DamageInfo> Monster::GiveDamage(int enemyAgility)
 	{
 		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(MONSTER_DAMAGE, damage, 0, strength);
 		AcceptAbility(damageInfo.get());
-		return std::move(damageInfo);
+		return damageInfo;
 	}
 	return nullptr;
 }

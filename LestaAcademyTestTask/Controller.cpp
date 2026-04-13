@@ -65,14 +65,14 @@ int Controller::ControlPromotePlayer()
 
 bool Controller::ControlChangeWeapon()
 {
-	bool changeWeapon = false;
+	int changeWeapon = false;
 
 	bool isInputCorrect = false;
 	while (!isInputCorrect)
 	{
 		if ((std::cin >> changeWeapon).good())
 		{
-			isInputCorrect = changeWeapon <= 1 && changeWeapon >= 0;
+			isInputCorrect = changeWeapon == 1 || changeWeapon == 0;
 			if (!isInputCorrect)
 			{
 				std::cout << "Invalid input. Please try again.\n";

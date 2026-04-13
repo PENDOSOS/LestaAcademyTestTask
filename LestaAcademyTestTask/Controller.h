@@ -12,9 +12,9 @@ public:
 	void SetPrinter(std::shared_ptr<Printer> printer);
 
 	bool StartGame();
-	bool RestartGame();
-	int ControlPromotePlayer();
-	bool ControlChangeWeapon();
+	static bool RestartGame();
+	static int ControlPromotePlayer();
+	static bool ControlChangeWeapon();
 private:
 	std::shared_ptr<Printer> printer;
 };

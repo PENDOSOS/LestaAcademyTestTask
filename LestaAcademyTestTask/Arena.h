@@ -15,7 +15,7 @@ class Controller;
 class Arena
 {
 public:
-	Arena(Controller* controller);
+	explicit Arena(Controller* controller);
 	void Battle();
 	void AfterBattle();
 	void Start();

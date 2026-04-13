@@ -46,30 +46,30 @@ public:
 
 class SwordProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
 
 class CudgelProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
 
 class DaggerProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
 
 class AxeProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
 
 class LanceProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
 
 class LegendarySwordProducer : public WeaponProducer
 {
-	std::unique_ptr<Weapon> GiveWeapon() override final;
+	std::unique_ptr<Weapon> GiveWeapon() final;
 };
