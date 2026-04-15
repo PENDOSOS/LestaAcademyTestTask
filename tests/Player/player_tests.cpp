@@ -68,9 +68,16 @@ TEST(BasePlayerTest, TakeDamage_WithLethalDamage_KillsPlayer) {
 TEST(BasePlayerTest, GiveDamage_WithNullWeapon_ReturnsNull) {
     BasePlayer player(3, 5, 2);
     // У оружия высокая ловкость противника - промах
-    auto result = player.GiveDamage(10);
-    // Результат может быть nullptr из-за промаха (зависит от RNG)
-    // Тестируем логику через множественные попытки
+    std::unique_ptr<DamageInfo> result = player.GiveDamage(10);
+
+    if (result) 
+    {
+        EXPECT_EQ(result->weaponDamage + result->bonusDamage + result->attackerStrength, 0);
+    }
+    else
+    {
+        EXPECT_EQ(result, nullptr);
+    }
 }
 
 TEST(BasePlayerTest, ChangeWeapon_SwapsWeapon) {
