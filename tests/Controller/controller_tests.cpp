@@ -28,10 +28,11 @@ TEST(ControllerTest, StartGame_WithPrinter_CallsPrintStartMessage) {
 
     bool result = controller.StartGame();
     
-    ASSERT_EQ(output.str(), "Welcome to autobattler game!\nStart new game (1 - yes, 0 - no)? ");
-    EXPECT_FALSE(result);
     std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Welcome to autobattler game!\nStart new game (1 - yes, 0 - no)? ");
+    EXPECT_FALSE(result);
 }
 
 TEST(ControllerTest, RestartGame_ValidInputYes_ReturnsTrue) {
@@ -46,10 +47,11 @@ TEST(ControllerTest, RestartGame_ValidInputYes_ReturnsTrue) {
 
     bool result = controller.RestartGame();
     
-    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
-    EXPECT_TRUE(result);
     std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
+    EXPECT_TRUE(result);
 }
 
 TEST(ControllerTest, RestartGame_ValidInputNo_ReturnsFalse) {
@@ -64,10 +66,11 @@ TEST(ControllerTest, RestartGame_ValidInputNo_ReturnsFalse) {
 
     bool result = controller.RestartGame();
     
-    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
-    EXPECT_FALSE(result);
     std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
+    EXPECT_FALSE(result);
 }
 
 TEST(ControllerTest, RestartGame_InvalidInputThenValid_HandlesCorrectly) {
@@ -83,10 +86,11 @@ TEST(ControllerTest, RestartGame_InvalidInputThenValid_HandlesCorrectly) {
     
     bool result = controller.RestartGame();
     
-    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? \nInvalid input. Try again.\n");
-    EXPECT_TRUE(result);
     std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? \nInvalid input. Try again.\n");
+    EXPECT_TRUE(result);
 }
 
 TEST(ControllerTest, ControlPromotePlayer_ValidClass1_Returns0) {
@@ -114,20 +118,34 @@ TEST(ControllerTest, ControlPromotePlayer_ValidClass3_Returns2) {
 TEST(ControllerTest, ControlPromotePlayer_InvalidThenValid_HandlesCorrectly) {
     std::stringstream input("5\n2\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
+
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
     
     int result = controller.ControlPromotePlayer();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
-    EXPECT_EQ(result, 1);  // 2 -> индекс 1
+
+    ASSERT_EQ(output.str(), "Invalid class number. Please try again.\n");
+    EXPECT_EQ(result, 1); 
 }
 
 TEST(ControllerTest, ControlPromotePlayer_NonNumericInput_HandlesCorrectly) {
     std::stringstream input("abc\n1\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     int result = controller.ControlPromotePlayer();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Invalid input. Please enter a number.\n");
     EXPECT_EQ(result, 0);
 }
 
@@ -155,8 +173,15 @@ TEST(ControllerTest, ControlChangeWeapon_InvalidInput_HandlesCorrectly) {
     std::stringstream input("2\n0\n");  // 2 - невалидно, 0 - валидно
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     bool result = controller.ControlChangeWeapon();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Invalid input. Please try again.\n");
     EXPECT_FALSE(result);
 }
