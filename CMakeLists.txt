@@ -13,6 +13,8 @@ add_subdirectory ("LestaAcademyTestTask")
 
 option(BUILD_TESTS "Build unit tests" ON)
 if(BUILD_TESTS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     enable_testing()
     add_subdirectory("tests")
     

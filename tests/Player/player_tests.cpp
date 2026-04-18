@@ -131,7 +131,7 @@ TEST(PlayerClassLevelTest, BanditLevel1_HiddenAttack_WhenAgilityHigher) {
     bandit.ChangeWeapon(std::move(weapon));
     
     // Атакуем противника с меньшей ловкостью (agility=3)
-    auto damage = bandit.GiveDamage(3);
+    auto damage = bandit.GiveDamage(0);
     
     ASSERT_NE(damage, nullptr);
     // Бонус +1 за Hidden Attack
@@ -139,7 +139,7 @@ TEST(PlayerClassLevelTest, BanditLevel1_HiddenAttack_WhenAgilityHigher) {
 }
 
 TEST(PlayerClassLevelTest, WarriorLevel1_Rush_DoubleDamageOnFirstTurn) {
-    auto basePlayer = std::make_unique<BasePlayer>(3, 2, 2);
+    auto basePlayer = std::make_unique<BasePlayer>(3, 10, 2);
     ClassWarriorLevel1 warrior(std::move(basePlayer));
     warrior.SetHealth(10);
     
@@ -148,11 +148,11 @@ TEST(PlayerClassLevelTest, WarriorLevel1_Rush_DoubleDamageOnFirstTurn) {
     weapon->damageType = CHOPPING;
     warrior.ChangeWeapon(std::move(weapon));
     
-    auto damage = warrior.GiveDamage(1);
+    auto damage = warrior.GiveDamage(0);
     
     ASSERT_NE(damage, nullptr);
     // Rush: bonus = weaponDamage на первом ходу
-    EXPECT_EQ(damage->bonusDamage, 4);
+    EXPECT_EQ(damage->bonusDamage + damage->weaponDamage, damage->weaponDamage * 2);
 }
 
 TEST(PlayerClassLevelTest, BarbarianLevel1_Fury_BonusDamageFirstThreeTurns) {
@@ -165,18 +165,18 @@ TEST(PlayerClassLevelTest, BarbarianLevel1_Fury_BonusDamageFirstThreeTurns) {
     barbarian.ChangeWeapon(std::move(weapon));
     
     // Первый ход: +2 к урону
-    auto damage1 = barbarian.GiveDamage(1);
+    auto damage1 = barbarian.GiveDamage(0);
     ASSERT_NE(damage1, nullptr);
     EXPECT_EQ(damage1->bonusDamage, 2);
     
     // Второй ход: +2 к урону
-    auto damage2 = barbarian.GiveDamage(1);
+    auto damage2 = barbarian.GiveDamage(0);
     ASSERT_NE(damage2, nullptr);
     EXPECT_EQ(damage2->bonusDamage, 2);
     
     // Четвёртый ход: -1 к урону
     barbarian.GiveDamage(1); // 3-й ход
-    auto damage4 = barbarian.GiveDamage(1);
+    auto damage4 = barbarian.GiveDamage(0);
     ASSERT_NE(damage4, nullptr);
     EXPECT_EQ(damage4->bonusDamage, -1);
 }

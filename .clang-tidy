@@ -1,0 +1,17 @@
+Checks: >
+  -*,
+  performance-move-const-arg,
+  performance-unnecessary-value-param,
+  clang-analyzer-cplusplus.InnerPointer,
+  modernize-use-std-array,
+  bugprone-smartptr-get,
+  bugprone-virtual-near-miss,
+  modernize-use-override,
+  cppcoreguidelines-special-member-functions,
+  readability-magic-numbers,
+  readability-function-cognitive-complexity,
+  readability-braces-around-statements,
+  readability-avoid-nested-conditional-operators
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*\.(cpp|h)$'
+FormatStyle: none
