@@ -222,3 +222,40 @@ TEST(PlayerClassLevelTest, BarbarianLevel2_StoneSkin_ReduceDamageByStamina) {
     // Stone Skin: урон уменьшается на stamina(4)
     // weaponDamage становится 5-4=1
 }
+
+TEST(PlayerClassLevelTest, BanditLevel3_AcceptsLevelBonus) {
+    auto base = std::make_unique<BasePlayer>(0, 6, 2);  // AGI > цели
+    ClassBanditLevel3 bandit(std::move(base));
+    bandit.SetHealth(20);
+    
+    auto weapon = std::make_unique<Weapon>();
+    weapon->damage = 4;
+    weapon->damageType = STABBING;
+    bandit.ChangeWeapon(std::move(weapon));
+    
+    for (int i = 0; i < 3; ++i) {
+        bandit.GiveDamage(10000);  // игнорируем результат
+    }
+
+    auto damage = bandit.GiveDamage(0);
+
+    ASSERT_NE(damage, nullptr);
+    // Ожидаем: базовый урон + бонус L1 (Hidden) + возможный бонус L3
+    EXPECT_GE(damage->bonusDamage, 3);
+}
+
+TEST(PlayerClassLevelTest, WarriorLevel3_BonusAcceptsImmediately) {
+    auto base = std::make_unique<BasePlayer>(0, 2, 2);
+    ClassWarriorLevel3 warrior(std::move(base));
+    warrior.SetHealth(30);
+    
+    EXPECT_EQ(warrior.GetStrength(), 1);
+}
+
+TEST(PlayerClassLevelTest, BarbarianLevel3_BonusAcceptsImmediately) {
+    auto base = std::make_unique<BasePlayer>(3, 2, 0);
+    ClassBarbarianLevel3 barbarian(std::move(base));
+    barbarian.SetHealth(25);
+    
+    EXPECT_EQ(barbarian.GetStamina(), 1);
+}
