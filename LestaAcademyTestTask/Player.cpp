@@ -29,7 +29,7 @@ void BasePlayer::TakeDamage(std::unique_ptr<DamageInfo> damageInfo)
 std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 {
 	currentTurn++;
-	if (IsAttackSuccess(enemyAgility))
+	if (IsAttackSuccess(enemyAgility) && weapon != nullptr)
 	{
 		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(weapon->damageType, weapon->damage, 0, strength);
 		return damageInfo;
