@@ -3,6 +3,7 @@
 #include "Character.h"
 
 #include <memory>
+#include <random>
 
 struct Weapon;
 
@@ -56,6 +57,9 @@ private:
 	std::unique_ptr<Weapon> weapon;
 
 	std::string name;
+
+	std::random_device dev;
+	std::mt19937 rng;
 };
 
 enum struct PlayerClassesEnum

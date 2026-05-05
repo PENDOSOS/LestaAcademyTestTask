@@ -365,3 +365,5 @@ FodyWeavers.xsd
 .vscode
 build
 res.txt
+asan_results
+venv

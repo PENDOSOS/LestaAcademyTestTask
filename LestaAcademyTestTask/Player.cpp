@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "Weapon.h"
 
-#include <random>
 #include <iostream>
 
 Player::~Player() {}
@@ -14,6 +13,7 @@ BasePlayer::BasePlayer(int strength, int agility, int stamina)
 	, currentTurn(0)
 	, weapon(nullptr)
 	, name("Player")
+	, rng(dev())
 {}
 
 BasePlayer::~BasePlayer()
@@ -44,8 +44,6 @@ void BasePlayer::ChangeWeapon(std::unique_ptr<Weapon> weapon)
 
 bool BasePlayer::IsAttackSuccess(int enemyAgility)
 {
-	std::random_device dev;
-	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> dist(1, agility + enemyAgility);
 
 	return dist(rng) > enemyAgility;
