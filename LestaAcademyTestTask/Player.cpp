@@ -29,7 +29,7 @@ void BasePlayer::TakeDamage(std::unique_ptr<DamageInfo> damageInfo)
 std::unique_ptr<DamageInfo> BasePlayer::GiveDamage(int enemyAgility)
 {
 	currentTurn++;
-	if (IsAttackSuccess(enemyAgility) && weapon != nullptr)
+	if (weapon != nullptr && IsAttackSuccess(enemyAgility))
 	{
 		std::unique_ptr<DamageInfo> damageInfo = std::make_unique<DamageInfo>(weapon->damageType, weapon->damage, 0, strength);
 		return damageInfo;
@@ -185,10 +185,10 @@ void ClassWarriorLevel3::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
 	}
 }
 
-#define CLASS_WARRIOR_HEALTH_BY_LEVEL 6
+#define CLASS_BARBARIAN_HEALTH_BY_LEVEL 6
 
 ClassBarbarianLevel1::ClassBarbarianLevel1(std::unique_ptr<Player> player)
-	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
+	: PlayerClassLevel(std::move(player), CLASS_BARBARIAN_HEALTH_BY_LEVEL)
 {}
 
 void ClassBarbarianLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
@@ -208,7 +208,7 @@ void ClassBarbarianLevel1::AcceptAbility(DamageInfo* damageInfo, int enemyAgilit
 }
 
 ClassBarbarianLevel2::ClassBarbarianLevel2(std::unique_ptr<Player> player)
-	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
+	: PlayerClassLevel(std::move(player), CLASS_BARBARIAN_HEALTH_BY_LEVEL)
 {}
 
 void ClassBarbarianLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgility)
@@ -220,7 +220,7 @@ void ClassBarbarianLevel2::AcceptAbility(DamageInfo* damageInfo, int enemyAgilit
 }
 
 ClassBarbarianLevel3::ClassBarbarianLevel3(std::unique_ptr<Player> player)
-	: PlayerClassLevel(std::move(player), CLASS_WARRIOR_HEALTH_BY_LEVEL)
+	: PlayerClassLevel(std::move(player), CLASS_BARBARIAN_HEALTH_BY_LEVEL)
 	, abilityAccepted(false)
 {
 	AcceptAbility();
