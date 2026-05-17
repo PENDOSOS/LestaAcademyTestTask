@@ -9,10 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: build
+    - name: run build
       run: ./build.sh
-    # - name: make
-    #   run: make
+    - name: run tests
+      run: ./run-test.sh
     # - name: make check
     #   run: make check
     # - name: make distcheck
