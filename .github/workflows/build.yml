@@ -11,6 +11,13 @@ jobs:
     - uses: actions/checkout@v4
     - name: run build
       run: ./build.sh
+    - name: pulling binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: binary
+        path: build/LestaAcademyTestTask/LestaAcademyTestTask
+        if-no-files-found: error # Ошибка, если файл не найден
+        retention-days: 1        # Хранить 1 день (экономия места)
   tests:
 
     runs-on: ubuntu-latest
