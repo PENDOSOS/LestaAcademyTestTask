@@ -5,46 +5,8 @@
 #include "Controller.h"
 #include "Printer.h"
 
-// Моковый Printer для тестов Controller
-class MockPrinter : public Printer {
-public:
-    void PrintStartMessage()  {
-        startMessageCalled = true;
-    }
-    
-    void PrintCharacterStats(const Character* character)  {
-        (void)character;
-    }
-    
-    void PrintBattleResult(bool playerWon, const std::string& opponentName)  {
-        (void)playerWon;
-        (void)opponentName;
-    }
-    
-    void PrintLevelUpOptions()  {
-        levelUpOptionsCalled = true;
-    }
-    
-    void PrintWeaponOffer(const Weapon* weapon) {
-        (void)weapon;
-    }
-    
-    void PrintGameWon()  {
-        gameWonCalled = true;
-    }
-    
-    void PrintGameOver()  {
-        gameOverCalled = true;
-    }
-    
-    bool startMessageCalled = false;
-    bool levelUpOptionsCalled = false;
-    bool gameWonCalled = false;
-    bool gameOverCalled = false;
-};
-
 Controller controller;
-auto printer = std::make_shared<MockPrinter>();
+auto printer = std::make_shared<Printer>();
 
 // ===== Тесты для Controller =====
 TEST(ControllerTest, StartGame_WithNullPrinter_ReturnsFalse) {
@@ -60,12 +22,17 @@ TEST(ControllerTest, StartGame_WithPrinter_CallsPrintStartMessage) {
     std::stringstream input("0\n");  // "no" для новой игры
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     bool result = controller.StartGame();
     
-    std::cin.rdbuf(originalCin);  // восстанавливаем cin
-    
-    EXPECT_TRUE(printer->startMessageCalled);
-    EXPECT_FALSE(result);  // пользователь выбрал "не начинать"
+    std::cout.rdbuf(originalCout);
+    std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Welcome to autobattler game!\nStart new game (1 - yes, 0 - no)? ");
+    EXPECT_FALSE(result);
 }
 
 TEST(ControllerTest, RestartGame_ValidInputYes_ReturnsTrue) {
@@ -74,9 +41,16 @@ TEST(ControllerTest, RestartGame_ValidInputYes_ReturnsTrue) {
     std::stringstream input("1\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     bool result = controller.RestartGame();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
     EXPECT_TRUE(result);
 }
 
@@ -86,9 +60,16 @@ TEST(ControllerTest, RestartGame_ValidInputNo_ReturnsFalse) {
     std::stringstream input("0\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     bool result = controller.RestartGame();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? ");
     EXPECT_FALSE(result);
 }
 
@@ -98,10 +79,17 @@ TEST(ControllerTest, RestartGame_InvalidInputThenValid_HandlesCorrectly) {
     // Сначала невалидный ввод, потом "1"
     std::stringstream input("abc\n1\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
+
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
     
     bool result = controller.RestartGame();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Start new game (1 - yes, 0 - no)? \nInvalid input. Try again.\n");
     EXPECT_TRUE(result);
 }
 
@@ -124,26 +112,40 @@ TEST(ControllerTest, ControlPromotePlayer_ValidClass3_Returns2) {
     int result = controller.ControlPromotePlayer();
     
     std::cin.rdbuf(originalCin);
-    EXPECT_EQ(result, 2);  // 3 -> индекс 2
+    EXPECT_EQ(result, 2);
 }
 
 TEST(ControllerTest, ControlPromotePlayer_InvalidThenValid_HandlesCorrectly) {
     std::stringstream input("5\n2\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
+
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
     
     int result = controller.ControlPromotePlayer();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
-    EXPECT_EQ(result, 1);  // 2 -> индекс 1
+
+    ASSERT_EQ(output.str(), "Invalid class number. Please try again.\n");
+    EXPECT_EQ(result, 1); 
 }
 
 TEST(ControllerTest, ControlPromotePlayer_NonNumericInput_HandlesCorrectly) {
     std::stringstream input("abc\n1\n");
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     int result = controller.ControlPromotePlayer();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Invalid input. Please enter a number.\n");
     EXPECT_EQ(result, 0);
 }
 
@@ -171,8 +173,15 @@ TEST(ControllerTest, ControlChangeWeapon_InvalidInput_HandlesCorrectly) {
     std::stringstream input("2\n0\n");  // 2 - невалидно, 0 - валидно
     std::streambuf* originalCin = std::cin.rdbuf(input.rdbuf());
     
+    std::streambuf* originalCout = std::cout.rdbuf();
+    std::stringstream output;
+    std::cout.rdbuf(output.rdbuf());
+
     bool result = controller.ControlChangeWeapon();
     
+    std::cout.rdbuf(originalCout);
     std::cin.rdbuf(originalCin);
+
+    ASSERT_EQ(output.str(), "Invalid input. Please try again.\n");
     EXPECT_FALSE(result);
 }
