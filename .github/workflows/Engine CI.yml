@@ -12,7 +12,7 @@ jobs:
     - name: run build
       run: ./build.sh
 
-  unit-tests:
+  static-analysis:
 
     runs-on: ubuntu-latest
 
